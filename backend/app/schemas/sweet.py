@@ -1,9 +1,9 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field
 
 class SweetBase(BaseModel):
     name: str = Field(..., min_length=1)
     category: str = Field(..., min_length=1)
-    price: float = Field(..., gt=0)
+    price: float = Field(..., gt=0, description="Price in rupees")
     quantity: int = Field(..., ge=0)
 
 class SweetCreate(SweetBase):
@@ -12,13 +12,14 @@ class SweetCreate(SweetBase):
 class SweetUpdate(BaseModel):
     name: str | None = None
     category: str | None = None
-    price: float | None = Field(None, gt=0)
+    price: float | None = Field(None, gt=0, description="Price in rupees")
     quantity: int | None = Field(None, ge=0)
 
 class Sweet(SweetBase):
     id: int
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        from_attributes = True
 
 class PurchaseRequest(BaseModel):
     quantity: int = Field(..., gt=0)
