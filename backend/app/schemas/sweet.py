@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class SweetBase(BaseModel):
     name: str = Field(..., min_length=1)
@@ -18,8 +18,7 @@ class SweetUpdate(BaseModel):
 class Sweet(SweetBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class PurchaseRequest(BaseModel):
     quantity: int = Field(..., gt=0)
